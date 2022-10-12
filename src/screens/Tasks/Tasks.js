@@ -4,48 +4,21 @@ import TaskItem from './TaskItem';
 import TaskForm from './taskForm';
 import CustomButton from '../../components/CustomButton';
 import Header from '../../components/Header';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteTask, toggleTask} from '../../redux/actions';
+import {getTasks} from '../../redux/selectors';
 
 export default function Tasks() {
-  const [taskList, setTasksList] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-
-  const onAddTask = title => {
-    setTasksList(list => [
-      ...taskList,
-      {
-        id: Date.now(),
-        title: title,
-        isComplete: false,
-      },
-    ]);
-  };
+  const tasks = useSelector(getTasks);
+  const dispatch = useDispatch();
 
   const onUpdateTask = id => {
-    let newTasks = [];
-    taskList.forEach(t => {
-      if (t.id !== id) {
-        newTasks.push(t);
-        return;
-      }
-
-      newTasks.push({
-        id,
-        title: t.title,
-        isComplete: !t.isComplete,
-      });
-    });
-    setTasksList(newTasks);
+    dispatch(toggleTask(id));
   };
 
   const onDeleteTask = id => {
-    let newTasks = [];
-    taskList.forEach(t => {
-      if (t.id !== id) {
-        newTasks.push(t);
-        return;
-      }
-    });
-    setTasksList(newTasks);
+    dispatch(deleteTask(id));
   };
 
   const onToggleForm = () => {
@@ -66,14 +39,13 @@ export default function Tasks() {
     <View style={styles.container}>
       <Header />
       <TaskForm
-        onAddTask={onAddTask}
         containerStyle={
           isSearchOpen ? styles.searchContainerOpen : styles.searchContainer
         }
         onToggleForm={onToggleForm}
       />
       <FlatList
-        data={taskList}
+        data={tasks}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
         style={styles.flatlist}
