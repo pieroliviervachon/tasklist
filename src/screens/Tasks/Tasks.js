@@ -11,7 +11,6 @@ import {getTasks} from '../../redux/selectors';
 export default function Tasks() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const tasks = useSelector(getTasks);
-  console.log('TASK', tasks);
   const dispatch = useDispatch();
 
   const onUpdateTask = id => {
@@ -27,7 +26,6 @@ export default function Tasks() {
   };
 
   const renderItem = ({item}) => {
-    console.log('ITEM', item);
     return (
       <TaskItem
         task={item}
