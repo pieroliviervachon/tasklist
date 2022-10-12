@@ -1,3 +1,2 @@
 // Selectors: Sélectionner une partie de notre store
-
-export const getTasks = store => store.taskList;
+export const getTasks = store => store.taskListReducer;
