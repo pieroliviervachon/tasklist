@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TextInput, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import CustomButton from '../../components/CustomButton';
-import {addTask} from '../../redux/actions';
+import {addTask} from '../../redux/reducers/TaskListReducer';
 
 export default function TaskForm({containerStyle, onToggleForm}) {
   const [newTitle, setNewTitle] = useState();
@@ -14,7 +14,7 @@ export default function TaskForm({containerStyle, onToggleForm}) {
 
   const onConfirmTask = () => {
     if (newTitle !== '') {
-      dispatch(addTask(newTitle));
+      dispatch(addTask({title: newTitle}));
       setNewTitle('');
       onToggleForm();
     }

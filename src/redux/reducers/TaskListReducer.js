@@ -1,6 +1,13 @@
 // reducers : function qui retourne un nouveau state
-import {addTask, toggleTask, deleteTask} from './../actions';
 import {createAction, createReducer} from '@reduxjs/toolkit';
+
+const ADD_TASK = 'ADD_TASK';
+const TOGGLE_TASK = 'TOGGLE_TASK';
+const DELETE_TASK = 'DELETE_TASK';
+
+export const addTask = createAction(ADD_TASK);
+export const toggleTask = createAction(TOGGLE_TASK);
+export const deleteTask = createAction(DELETE_TASK);
 
 const initialState = [
   {
@@ -30,34 +37,26 @@ const initialState = [
   },
 ];
 
-export const taskListReducer = createReducer(initialState, builder => {
+export default createReducer(initialState, builder => {
   builder
     .addCase(addTask, (state, action) => {
       return [
         ...state,
         {
           id: new Date().getTime(),
-          title: action.payload,
+          title: action.payload.title,
           isCompleted: false,
         },
       ];
     })
     .addCase(toggleTask, (state, action) => {
-      let newTasks = [];
-      state.forEach(task => {
-        if (task.id !== action.payload) {
-          newTasks.push(task);
-          return;
-        }
-
-        newTasks.push({
-          ...task,
-          isComplete: !task.isComplete,
-        });
-      });
-      return newTasks;
+      return state.map(task => ({
+        ...task,
+        isComplete:
+          task.id !== action.payload.id ? task.isComplete : !task.isComplete,
+      }));
     })
     .addCase(deleteTask, (state, action) => {
-      return state.filter(task => task.id !== action.payload);
+      return state.filter(task => task.id !== action.payload.id);
     });
 });

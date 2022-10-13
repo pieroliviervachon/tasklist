@@ -5,7 +5,7 @@ import TaskForm from './taskForm';
 import CustomButton from '../../components/CustomButton';
 import Header from '../../components/Header';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteTask, toggleTask} from '../../redux/actions';
+import {deleteTask, toggleTask} from '../../redux/reducers/TaskListReducer';
 import {getTasks} from '../../redux/selectors';
 
 export default function Tasks() {
@@ -14,11 +14,11 @@ export default function Tasks() {
   const dispatch = useDispatch();
 
   const onUpdateTask = id => {
-    dispatch(toggleTask(id));
+    dispatch(toggleTask({id: id}));
   };
 
   const onDeleteTask = id => {
-    dispatch(deleteTask(id));
+    dispatch(deleteTask({id: id}));
   };
 
   const onToggleForm = () => {
